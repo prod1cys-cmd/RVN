@@ -1,0 +1,31 @@
+﻿Board Layer Stack
+Number;Name;Type;Manufacturer;Material;Process;Thickness (mm);Weight (oz);Dk;Df;Orientation;Copper Orientation;Pullback distance (mm);Description;Constructions;Resin (%);Frequency (GHz);GlassTransTemp (°C)
+;Top Overlay;Overlay;;;;;;;;;;;;;;;
+;Top Solder;Solder Mask;;Solder Resist;;0.03;;3.5;;;;;;;;;
+1;Top Layer;Signal;;;;0.04;1;;;Top;Above;;;;;;
+;Dielectric 2;Prepreg;Altium Designer;PP-006;;0.1;;4.1;0.02;;;;;1080;62;1;180
+2;Int1;Signal;Altium Designer;CF-004;ED;0.035;1;;;Not allowed;Above;;Copper Foil;;;;
+;Dielectric 4;Prepreg;Altium Designer;PP-006;;0.1;;4.1;0.02;;;;;1080;62;1;180
+3;Int2;Signal;Altium Designer;CF-004;ED;0.018;1;;;Not allowed;Above;;Copper Foil;;;;
+;Dielectric 6;Prepreg;Altium Designer;PP-006;;0.2;;4.1;0.02;;;;;1080;62;1;180
+4;Int3;Signal;Altium Designer;CF-004;ED;0.035;1;;;Not allowed;Above;;Copper Foil;;;;
+;Dielectric 1;Dielectric;;FR-4;;0.5;;4.8;;;;;;;;;
+5;Int4;Signal;Altium Designer;CF-004;ED;0.035;1;;;Not allowed;Below;;Copper Foil;;;;
+;Dielectric 7;Prepreg;Altium Designer;PP-006;;0.2;;4.1;0.02;;;;;1080;62;1;180
+6;Int5;Signal;Altium Designer;CF-004;ED;0.018;1;;;Not allowed;Below;;Copper Foil;;;;
+;Dielectric 5;Prepreg;Altium Designer;PP-006;;0.1;;4.1;0.02;;;;;1080;62;1;180
+7;Int6;Plane;Altium Designer;CF-004;ED;0.035;1;;;;Below;0.508;Copper Foil;;;;
+;Dielectric 3;Prepreg;Altium Designer;PP-006;;0.1;;4.1;0.02;;;;;1080;62;1;180
+8;Bottom Layer;Signal;;;;0.04;1;;;Bottom;Below;;;;;;
+;Bottom Solder;Solder Mask;;Solder Resist;;0.03;;3.5;;;;;;;;;
+;Bottom Overlay;Overlay;;;;;;;;;;;;;;;
+
+
+No impedances
+
+Via types
+#;Name;Type;Layers;Stack
+1;Thru 1:8;Thru;Top Layer-Bottom Layer;Board Layer Stack
+
+
+No back drills
