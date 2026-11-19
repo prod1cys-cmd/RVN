@@ -1,0 +1,9 @@
+{
+  "rate_gbps": [4, 8],
+  "pole_frequency_ghz": 4,
+  "bits_in_period": 127,
+  "samples_per_ui": 128,
+  "initial_register": 127,
+  "level_low": -1,
+  "level_high": 1
+}
