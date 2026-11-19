@@ -1,0 +1,18 @@
+{
+  "pages": 105,
+  "toc": 81,
+  "figures": 12,
+  "tables": 41,
+  "sources": 61,
+  "editable_math": 34,
+  "sparse_pages": [],
+  "pdf_fonts": [
+    "DejaVuSerif-Italic",
+    "LiberationSerif",
+    "LiberationSerif-Italic",
+    "NotoSerif-Regular",
+    "OpenSymbol",
+    "TimesNewRomanPS-BoldMT",
+    "TimesNewRomanPSMT"
+  ]
+}
