@@ -1,0 +1,91 @@
+{
+  "source_notes": {
+    "sampling_mhz": "АРБМ.468332.022И2 v2, §§1.3, 3.5, табл. 9",
+    "adc_reference_snr_dbfs": "Книга 3 §3.2, заявление со ссылкой [19]. ТУ изготовителя недоступны",
+    "target_dynamics_db": "Протокол 13.11.2026, поручения 5–6 и предварительные технические ориентиры",
+    "isolation_margin_db": "Протокол 13.11.2026, предварительные ориентиры обсуждения, не норма",
+    "headroom_db": "Разность полной шкалы и уровня −6 дБпш по И2 §§1.3, 1.5",
+    "test_isolation_db": "И2 §4.7, П-06, критерий методики",
+    "mockup_noise_ratio_dbfs": "Условный расчёт без фильтра, плоская спектральная плотность до 500 МГц, noise_budget.csv",
+    "timings": "И2 §§1.5, 4.5, 4.9, 4.11; сочетания минимумов/максимумов не следует считать режимами инструкции",
+    "analog_input": "АРБМ.468157.011Э3, лист 6, DA1/X23 and Analog Devices AD8367 Rev.A Table 1. Equivalent circuit neglects reactive impedance and output network.",
+    "reference_split": "АРБМ.468332.022И2 v2, §2.3.1 W7/XW2, §4.3 inputs terminated at 50 Ω; all ports modeled with ideal nominal values."
+  },
+  "sampling_mhz": 400,
+  "bandwidth_mhz": 20,
+  "tone_mhz": 60,
+  "nominal_bits": [
+    14,
+    16
+  ],
+  "adc_reference_snr_dbfs": 62,
+  "jitter_fs": 330,
+  "target_dynamics_db": [
+    60,
+    90,
+    110
+  ],
+  "headroom_db": 6,
+  "isolation_margin_db": [
+    0,
+    10,
+    20
+  ],
+  "test_isolation_db": 68,
+  "mockup_noise_ratio_dbfs": 51.435,
+  "candidate_overlap_db": [
+    0,
+    6,
+    10
+  ],
+  "timings": [
+    [
+      "П-04, короткий",
+      0.07,
+      3000
+    ],
+    [
+      "П-04, длинный",
+      1.2,
+      600
+    ],
+    [
+      "П-08, короткий; П-10",
+      0.5,
+      1000
+    ],
+    [
+      "П-08, длинный",
+      1.2,
+      600
+    ],
+    [
+      "Край произведения диапазонов, не режим",
+      0.07,
+      500
+    ],
+    [
+      "Край произведения диапазонов, не режим",
+      1.2,
+      3000
+    ]
+  ],
+  "analog_input": {
+    "sma_reference_ohm": 50,
+    "input_series_ohm": 174,
+    "input_shunt_ohm": 57.6,
+    "vga_input_nominal_ohm": 200,
+    "vga_input_range_ohm": [
+      175,
+      225
+    ],
+    "vga_nominal_gain_db": 42.5,
+    "vga_target_vrms": 0.354,
+    "vga_max_input_vpp": 0.7
+  },
+  "reference_split": {
+    "low_source_dbm": 4,
+    "pad_db": 6,
+    "impedance_ohm": 50
+  }
+}

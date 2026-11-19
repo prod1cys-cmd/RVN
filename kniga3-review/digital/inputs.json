@@ -7,7 +7,11 @@
     "coding_denominator": 8
   },
   "flash": {
-    "image_sizes_mib": [4, 16, 32],
+    "image_sizes_mib": [
+      4,
+      16,
+      32
+    ],
     "page_size_bytes": 256,
     "sector_size_bytes": 65536,
     "typical_page_program_us": 120,
@@ -23,12 +27,22 @@
     "jtag_scenario_clock_hz": 10000000
   },
   "signal_integrity": {
-    "effective_permittivity_scenarios": [3.2, 4.1],
+    "effective_permittivity_scenarios": [
+      3.2,
+      4.1
+    ],
     "loss_tangent_scenario": 0.02,
-    "length_mm_scenarios": [25, 50, 100],
+    "length_mm_scenarios": [
+      25,
+      50,
+      100
+    ],
     "skew_scenario_mm": 1,
     "via_stub_scenario_mm": 1,
-    "ddr_transfers_hz": [800000000, 1066000000],
+    "ddr_transfers_hz": [
+      800000000,
+      1066000000
+    ],
     "rgmii_transfers_hz": 250000000,
     "mdi_baud": 125000000
   },
@@ -37,15 +51,51 @@
     "time_delta_limit_ppm": 100,
     "single_capture_floor_ns": 0.6,
     "averaged_capture_floor_ns": 0.4,
-    "nominal_delta_ns": [1, 10, 100, 1000],
+    "nominal_delta_ns": [
+      1,
+      10,
+      100,
+      1000
+    ],
     "pat_trig_nominal_load_ohm": 50,
-    "load_level_scenarios_v": [2, 2.4, 3.3],
+    "load_level_scenarios_v": [
+      2,
+      2.4,
+      3.3
+    ],
     "parallel_outputs": 3
   },
   "clutter": {
-    "pulses": [16, 32],
-    "mask_halfwidth_bins": [0, 1, 2, 3],
-    "fractional_bin_offsets": [0, 0.25, 0.5],
-    "target_improvement_db": 47
+    "pulses": [
+      16,
+      32
+    ],
+    "mask_halfwidth_bins": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "fractional_bin_offsets": [
+      0,
+      0.25,
+      0.5
+    ],
+    "target_improvement_db": 47,
+    "p10_idealized": {
+      "prf_hz": 1000,
+      "sigma_speed_m_per_s": 1,
+      "wavelengths_m": {
+        "X": 0.0319,
+        "S": 0.0984
+      },
+      "transform_factors": [
+        1,
+        2
+      ],
+      "seed": 20261119,
+      "independent_packs": 2048,
+      "numerical_covariance_diagonal": 1e-12
+    }
   }
 }

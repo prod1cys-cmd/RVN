@@ -4,6 +4,8 @@ import cmath
 import csv
 import json
 import math
+import random
+import statistics
 from pathlib import Path
 
 DIRECTORY = Path(__file__).resolve().parent
@@ -123,6 +125,85 @@ def clutter_rows():
                 )
 
 
+def gaussian_clutter_rows():
+    """Idealized P-10 scenario without noise, phase errors or hardware effects."""
+    settings = DATA["clutter"]
+    scenario = settings["p10_idealized"]
+    generator = random.Random(scenario["seed"])
+    for band, wavelength in scenario["wavelengths_m"].items():
+        sigma_normalized = 2 * scenario["sigma_speed_m_per_s"] / (
+            wavelength * scenario["prf_hz"]
+        )
+        for pulses in settings["pulses"]:
+            covariance = [
+                math.exp(-2 * (math.pi * sigma_normalized * n) ** 2)
+                for n in range(pulses)
+            ]
+            # The diagonal increment stabilizes Cholesky for narrow Gaussian spectra.
+            covariance[0] += scenario["numerical_covariance_diagonal"]
+            # Cholesky factor of the sampled ideal Gaussian Doppler covariance.
+            factor = [[0.0] * pulses for _ in range(pulses)]
+            for row in range(pulses):
+                for col in range(row + 1):
+                    residual = covariance[row - col] - sum(
+                        factor[row][k] * factor[col][k] for k in range(col)
+                    )
+                    factor[row][col] = (
+                        math.sqrt(residual) if row == col else residual / factor[col][col]
+                    )
+            window = [
+                0.54 - 0.46 * math.cos(2 * math.pi * i / (pulses - 1))
+                for i in range(pulses)
+            ]
+            packs = []
+            for _ in range(scenario["independent_packs"]):
+                white = [
+                    complex(generator.gauss(0, 1), generator.gauss(0, 1)) / math.sqrt(2)
+                    for _ in range(pulses)
+                ]
+                packs.append([
+                    sum(coeff * value for coeff, value in zip(factor[row], white))
+                    for row in range(pulses)
+                ])
+            for size_factor in scenario["transform_factors"]:
+                transform_size = pulses * size_factor
+                mask_halfwidth = min(
+                    math.ceil(2 * sigma_normalized * transform_size), transform_size // 4
+                )
+                retained_bins = [
+                    k for k in range(transform_size)
+                    if min(k, transform_size - k) > mask_halfwidth
+                ]
+                kernels = [
+                    [
+                        window[i] * cmath.exp(-2j * math.pi * k * i / transform_size)
+                        for i in range(pulses)
+                    ]
+                    for k in retained_bins
+                ]
+                peak_clutter = [
+                    max(abs(sum(a * b for a, b in zip(kernel, pack))) ** 2
+                        for kernel in kernels)
+                    for pack in packs
+                ]
+                gains = []
+                for channel in range(transform_size):
+                    tone = [
+                        cmath.exp(2j * math.pi * channel * i / transform_size)
+                        for i in range(pulses)
+                    ]
+                    gains.append(max(abs(sum(a * b for a, b in zip(kernel, tone))) ** 2
+                                     for kernel in kernels))
+                residual_mean = statistics.mean(peak_clutter)
+                residual_sem = statistics.stdev(peak_clutter) / math.sqrt(len(peak_clutter))
+                average_gain = statistics.mean(gains)
+                yield (
+                    band, pulses, transform_size, mask_halfwidth, len(packs),
+                    average_gain, residual_mean, residual_sem,
+                    10 * math.log10(covariance[0] * average_gain / residual_mean),
+                )
+
+
 def main():
     write_rows("jesd.csv", ["M", "decimation", "lane_bps", "UI_ps"], jesd_rows())
     write_rows("flash.csv", [
@@ -150,6 +231,12 @@ def main():
         "pulses", "DFT_length", "fractional_bin_offset", "mask_halfwidth_bins",
         "peak_to_peak_clutter_suppression_db",
     ], clutter_rows())
+    write_rows("gaussian_clutter.csv", [
+        "band", "pulses", "DFT_length", "mask_halfwidth_bins", "independent_packs",
+        "mean_target_gain", "mean_remaining_peak_clutter_power",
+        "remaining_peak_clutter_standard_error", "model_improvement_db",
+    ], gaussian_clutter_rows())
+
 
 
 if __name__ == "__main__":

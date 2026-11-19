@@ -66,21 +66,40 @@ def calculate_thermal(model):
     rows = []
     total_converter = 0.0
     total_ldo = 0.0
+    total_ldo_current = 0.0
+    max_ldo_output_v = 0.0
+    max_ldo_current_a = 0.0
     for rail, voltage, current, fed_by_ldo in model["converter_rails"]:
         power = voltage * current
         loss = (model["ldo_nominal_input_v"] - voltage) * current if fed_by_ldo else 0.0
         total_converter += power
         total_ldo += loss
+        if fed_by_ldo:
+            total_ldo_current += current
+            max_ldo_output_v = max(max_ldo_output_v, voltage)
+            max_ldo_current_a = max(max_ldo_current_a, current)
         rows.append([rail, f"{power:.6f}", f"{loss:.6f}"])
     rows.append(["Сумма произведений независимых максимумов", f"{total_converter:.6f}", f"{total_ldo:.6f}"])
     write_csv("thermal_converter_rails.csv", ["rail", "load_w", "series_regulator_loss_w"], rows)
     amplifier_supply = model["if_amplifier_count"] * model["if_amplifier_scenario_v"]
+    headroom = (
+        model["ldo_nominal_input_v"] * (1 - model["ldo_input_relative_tolerance"])
+        - max_ldo_output_v * (1 + model["ldo_output_relative_tolerance"])
+        - model["ldo_dropout_max_v_at_rated_current"]
+    )
     write_csv("thermal_reference_points.csv", ["case", "value", "unit"], [
         ["К5119ПВ1Я, типовая паспортная конфигурация по Книге 3", model["converter_catalog_typical_w"], "Вт"],
         ["К5119ПВ1Я, максимальное значение по Книге 3", model["converter_catalog_max_w"], "Вт"],
         ["HMC7044, профиль 1, потребление с учётом терминации", model["clock_v"] * model["clock_current_profile_1_a"], "Вт"],
         ["Четыре AD8367, типовой ток при максимальном усилении", amplifier_supply * model["if_amplifier_current_typ_a"], "Вт"],
         ["Четыре AD8367, максимум тока при максимальном усилении", amplifier_supply * model["if_amplifier_current_max_a"], "Вт"],
+        ["TPS7A92, оценка остатка по напряжению до пульсаций", round(headroom, 4), "В"],
+        ["Ток шины девяти LDO, сумма независимых максимумов", round(total_ldo_current, 2), "А"],
+        ["Номинальный предел тока источника промежуточной шины ADP2384",
+         model["intermediate_regulator_rated_current_a"], "А"],
+        ["Удвоенный максимальный ток наиболее нагруженной группы LDO (условно)", 2 * max_ldo_current_a, "А"],
+        ["Удвоенный суммарный ток LDO (условно)", round(2 * total_ldo_current, 2), "А"],
+        ["Паспортный ток отдельного TPS7A92", model["ldo_rated_current_a"], "А"],
         ["XC7Z030, температурный перепад до паспортного предела",
          model["junction_limit_c"] - model["case_air_scenario_c"], "К"],
     ])

@@ -44,6 +44,12 @@
     "if_amplifier_load_ohm": 200,
     "if_amplifier_source": "ПЭ3 и AD8367, таблица 1, ENBL high, максимум усиления, R_L=200 Ом; 5 В — расчётный сценарий",
     "junction_limit_c": 100,
-    "case_air_scenario_c": 70
+    "case_air_scenario_c": 70,
+    "ldo_input_relative_tolerance": 0.05,
+    "ldo_output_relative_tolerance": 0.02,
+    "ldo_dropout_max_v_at_rated_current": 0.4,
+    "ldo_rated_current_a": 2,
+    "intermediate_regulator_rated_current_a": 4,
+    "source_headroom": "И2 v2, таблица 8, допуски +2V5A_VDD и 1,845 В; TI TPS7A92 SBVS318C, таблица электрических параметров, VDO максимум 0,400 В при 2 А; ADI ADP2384, непрерывный выходной ток 4 А"
   }
 }
