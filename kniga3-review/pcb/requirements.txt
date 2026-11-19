@@ -1,0 +1,6 @@
+pygerber==2.4.3
+numpy==2.3.5
+pillow==13.0.0
+matplotlib==3.10.8
+gerbonara==1.5.0
+CairoSVG==2.9.1

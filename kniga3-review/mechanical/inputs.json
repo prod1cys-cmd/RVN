@@ -1,0 +1,49 @@
+{
+  "vibration": {
+    "source": "АРБМ.468332.022ПЗ, Книга 3, разделы 4.4, 9.3, таблицы 1.3 и 4.1; IACS UR E10 Rev. 9, п. 7",
+    "displacement_peak_m": 0.001,
+    "fixed_acceleration_peak_g": 0.7,
+    "frequency_low_hz": 2,
+    "frequency_break_hz": 13.2,
+    "frequency_high_hz": 100,
+    "standard_gravity_m_s2": 9.80665,
+    "sensitivity_per_g": 1e-9,
+    "proof_threshold_db": 47,
+    "carrier_hz": {"S": 3110000000, "X": 9470000000},
+    "delay_s": [0.0001, 0.0005, 0.001],
+    "pulse_period_s": [0.00033, 0.002],
+    "frequency_grid_step_hz": 0.1
+  },
+  "thermal": {
+    "source_converter": "АРБМ.468332.022ПЗ, Книга 3, таблицы 8.2 и 8.3; АРБМ.468157.011Э2, схема питания, лист 1",
+    "source_clock": "HMC7044, Data Sheet Rev. E, таблица 2, профиль 1",
+    "source_if_amplifier": "AD8367, Data Sheet, таблица 1; АРБМ.468157.011ПЭ3, позиции DA1, DA8, DA14, DA15",
+    "source_capacity": "АРБМ.468332.022ПЗ, Книга 3, разделы 9.2–9.5; AMD DS191",
+    "converter_catalog_typical_w": 5.5,
+    "converter_catalog_max_w": 7.5,
+    "ldo_nominal_input_v": 2.5,
+    "converter_rails": [
+      ["VDD_1P0", 1.0, 3.0, false],
+      ["VDD_1P0_ADC", 1.025, 0.30, true],
+      ["VDD_1P0_DAC", 1.025, 0.75, true],
+      ["VDD_1P0_DAC_PLL_L/R", 1.025, 0.06, true],
+      ["VDD_1P0_RX_PLL", 1.025, 0.12, true],
+      ["VDD_1P0_TX_RX", 1.025, 0.50, true],
+      ["VDD_1P8_ADC", 1.845, 1.50, true],
+      ["VDD_1P8_DAC", 1.845, 0.45, true],
+      ["VDD_1P8_DAC_PLL_L/R", 1.845, 0.06, true],
+      ["VDD_1P8_RX_PLL", 1.845, 0.03, true],
+      ["VDD_1P8_IO", 1.8, 0.002, false]
+    ],
+    "clock_v": 3.3,
+    "clock_current_profile_1_a": 0.586,
+    "if_amplifier_count": 4,
+    "if_amplifier_scenario_v": 5.0,
+    "if_amplifier_current_typ_a": 0.026,
+    "if_amplifier_current_max_a": 0.030,
+    "if_amplifier_load_ohm": 200,
+    "if_amplifier_source": "ПЭ3 и AD8367, таблица 1, ENBL high, максимум усиления, R_L=200 Ом; 5 В — расчётный сценарий",
+    "junction_limit_c": 100,
+    "case_air_scenario_c": 70
+  }
+}

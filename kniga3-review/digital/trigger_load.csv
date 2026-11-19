@@ -1,0 +1,4 @@
+load_voltage_v,total_current_ma,balanced_branch_current_ma
+2,40.0,13.333333333333334
+2.4,48.0,16.0
+3.3,66.0,22.0

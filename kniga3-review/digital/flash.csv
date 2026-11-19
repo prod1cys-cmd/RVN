@@ -1,0 +1,4 @@
+image_MiB,ideal_quad_wire_s,ideal_jtag_10MHz_s,ideal_sd_25MHz_s,typ_erase_s,max_erase_s,program_transfer_model_s,typ_internal_program_s,max_internal_program_s,ideal_qspi_verify_s,typ_total_without_host_overhead_s,max_device_time_scenario_without_host_overhead_s
+4,0.08388608,3.3554432,0.33554432,9.6,64.0,1.39460608,1.96608,29.4912,0.33554432,13.2962304,95.2213504
+16,0.33554432,13.4217728,1.34217728,38.4,256.0,5.57842432,7.86432,117.9648,1.34217728,53.1849216,380.8854016
+32,0.67108864,26.8435456,2.68435456,76.8,512.0,11.15684864,15.72864,235.9296,2.68435456,106.3698432,761.7708032

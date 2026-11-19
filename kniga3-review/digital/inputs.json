@@ -1,0 +1,51 @@
+{
+  "jesd": {
+    "sample_rate_hz": 400000000,
+    "transmitted_sample_bits": 16,
+    "physical_lanes": 4,
+    "coding_numerator": 10,
+    "coding_denominator": 8
+  },
+  "flash": {
+    "image_sizes_mib": [4, 16, 32],
+    "page_size_bytes": 256,
+    "sector_size_bytes": 65536,
+    "typical_page_program_us": 120,
+    "maximum_page_program_us": 1800,
+    "typical_sector_erase_s": 0.15,
+    "maximum_sector_erase_s": 1.0,
+    "qspi_quad_max_clock_hz": 100000000,
+    "qspi_scenario_clock_hz": 25000000,
+    "program_payload_bits_per_clock": 1,
+    "verification_payload_bits_per_clock": 4,
+    "conservative_transaction_overhead_clocks_per_page": 80,
+    "sd_scenario_clock_hz": 25000000,
+    "jtag_scenario_clock_hz": 10000000
+  },
+  "signal_integrity": {
+    "effective_permittivity_scenarios": [3.2, 4.1],
+    "loss_tangent_scenario": 0.02,
+    "length_mm_scenarios": [25, 50, 100],
+    "skew_scenario_mm": 1,
+    "via_stub_scenario_mm": 1,
+    "ddr_transfers_hz": [800000000, 1066000000],
+    "rgmii_transfers_hz": 250000000,
+    "mdi_baud": 125000000
+  },
+  "metrology": {
+    "sample_rate_hz": 2000000000,
+    "time_delta_limit_ppm": 100,
+    "single_capture_floor_ns": 0.6,
+    "averaged_capture_floor_ns": 0.4,
+    "nominal_delta_ns": [1, 10, 100, 1000],
+    "pat_trig_nominal_load_ohm": 50,
+    "load_level_scenarios_v": [2, 2.4, 3.3],
+    "parallel_outputs": 3
+  },
+  "clutter": {
+    "pulses": [16, 32],
+    "mask_halfwidth_bins": [0, 1, 2, 3],
+    "fractional_bin_offsets": [0, 0.25, 0.5],
+    "target_improvement_db": 47
+  }
+}

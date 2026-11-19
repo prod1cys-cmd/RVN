@@ -1,0 +1,3 @@
+material,frequency_ghz,length_mm,dielectric_loss_db,delay_ns,z_ratio_to_first_material
+Isola 370HR,10.0,100.0,4.5053,0.6604,1.0000
+Rogers AD1000,10.0,100.0,0.6686,1.0653,0.6199
