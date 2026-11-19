@@ -1,6 +1,6 @@
 """Check the release DOCX against the bookmarks and page geometry of its PDF."""
 import argparse
-from collections import Counter
+from decimal import Decimal
 import json
 import re
 from pathlib import Path
@@ -45,6 +45,26 @@ for name,ids in captions.items():
         assert len(hits)==1,(name,item,len(hits))
         if name=='Рисунок':
             assert hits[0].get_image_info(),(name,item,'missing image on caption page')
+checks = next(
+    table for table in word.tables
+    if table.cell(0, 0).text == 'Код' and table.cell(1, 0).text == 'П-01'
+)
+assert [row.cells[0].text for row in checks.rows[1:]] == [
+    f'П-{index:02}' for index in range(1, 12)
+]
+assert '51 дБ' in checks.cell(3, 2).text and '47 дБ' in checks.cell(10, 2).text
+cost = next(
+    table for table in word.tables
+    if table.cell(0, 0).text == '№' and table.cell(0, 1).text == 'Компонент'
+)
+amounts = []
+for row in cost.rows[1:-1]:
+    quantity, unit_price, total = (
+        Decimal(''.join(cell.text.split()).replace(',', '.')) for cell in row.cells[2:]
+    )
+    assert quantity * unit_price == total
+    amounts.append(total)
+assert sum(amounts) == Decimal(''.join(cost.rows[-1].cells[-1].text.split()).replace(',', '.'))
 fonts=set()
 sparse=[]
 for page in pdf:
