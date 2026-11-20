@@ -34,6 +34,36 @@ for name,ids in captions.items():
 source_start=next(i for i,p in enumerate(paragraphs) if p.style.name=='Heading 1' and p.text=='СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ')
 sources=[int(m[1]) for p in paragraphs[source_start+1:] if (m:=re.match(r'^(\d+)\.',p.text))]
 assert sources==list(range(1,len(sources)+1))
+bibliography_page = int(bookmarks['СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ']) - 1
+printed_sources = [
+    int(match[1])
+    for page in list(pdf)[bibliography_page:]
+    for block in page.get_text('blocks')
+    if abs(block[0] - word.sections[0].left_margin.pt) < 2
+    and (match := re.match(r'^(\d+)\.\s', block[4]))
+]
+assert printed_sources == sources, 'Bibliography numbers differ in PDF'
+bibliography = paragraphs[source_start+1:]
+assert all(
+    p.paragraph_format.keep_together is True and p.paragraph_format.line_spacing == 1.5
+    for p in bibliography
+), 'Bibliography typography is inconsistent'
+assert all(
+    not re.search(r'АРБМ\.|Протокол технического совещания|POS26|Коммерческое предложение', p.text)
+    for p in bibliography
+), 'Internal material listed as an external source'
+source_ref = re.compile(r'\[([0-9]+(?:[–-][0-9]+)?(?:,\s*[0-9]+(?:[–-][0-9]+)?)*)\]')
+body_texts = [p.text for p in paragraphs[:source_start]]
+body_texts.extend(c.text for t in word.tables for row in t.rows for c in row.cells)
+for body in body_texts:
+    for group in source_ref.findall(body):
+        for value in re.findall(r'\d+', group):
+            assert int(value) in sources, ('Invalid source reference', group)
+selection = next(i for i,p in enumerate(paragraphs) if p.style.name == 'Heading 2' and p.text.startswith('2.7 '))
+structure = next(i for i,p in enumerate(paragraphs) if p.style.name == 'Heading 2' and p.text.startswith('2.8 '))
+assert selection < structure
+assert not any(re.search(r'\b(?:DD|DA)\d+\b', p.text) for p in paragraphs[selection:structure])
+
 abstract=f'Отчёт {len(pdf)} с., кн. 3, {len(captions["Рисунок"])} рис., {len(captions["Таблица"])} табл., {len(sources)} источн.'
 assert any(p.text==abstract for p in paragraphs)
 assert any(abstract in ' '.join(pg.get_text().split()) for pg in pdf)
@@ -65,6 +95,9 @@ for row in cost.rows[1:-1]:
     assert quantity * unit_price == total
     amounts.append(total)
 assert sum(amounts) == Decimal(''.join(cost.rows[-1].cells[-1].text.split()).replace(',', '.'))
+section = word.sections[0]
+left_margin = section.left_margin.pt
+right_margin = section.right_margin.pt
 fonts=set()
 sparse=[]
 for page in pdf:
@@ -77,7 +110,11 @@ for page in pdf:
     for f in page.get_fonts():
         fonts.add(f[3].split('+')[-1])
     for img in page.get_image_info():
-        assert fitz.Rect(img['bbox']) in (page.rect+(-.5,-.5,.5,.5)), (page.number+1,img['bbox'])
+        box = fitz.Rect(img['bbox'])
+        assert box in (page.rect+(-.5,-.5,.5,.5)), (page.number+1,img['bbox'])
+        assert box.x0 >= left_margin-3 and box.x1 <= page.rect.width-right_margin+3, (
+            page.number+1, 'Image exceeds text area', img['bbox']
+        )
 assert any('TimesNewRoman' in f for f in fonts)
 with ZipFile(args.docx) as z:
     assert z.testzip() is None
