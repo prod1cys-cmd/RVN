@@ -59,8 +59,8 @@ for body in body_texts:
     for group in source_ref.findall(body):
         for value in re.findall(r'\d+', group):
             assert int(value) in sources, ('Invalid source reference', group)
-selection = next(i for i,p in enumerate(paragraphs) if p.style.name == 'Heading 2' and p.text.startswith('2.7 '))
-structure = next(i for i,p in enumerate(paragraphs) if p.style.name == 'Heading 2' and p.text.startswith('2.8 '))
+selection = next(i for i,p in enumerate(paragraphs) if p.style.name == 'Heading 2' and p.text.endswith('Сравнение и выбор элементной базы'))
+structure = next(i for i,p in enumerate(paragraphs) if p.style.name == 'Heading 2' and p.text.endswith('Структура модуля'))
 assert selection < structure
 assert not any(re.search(r'\b(?:DD|DA)\d+\b', p.text) for p in paragraphs[selection:structure])
 
