@@ -1,0 +1,21 @@
+% Рисунок: волновое сопротивление микрополосковых линий (формулы IPC-2141)
+er = 4.1; H = 0.1; T = 0.04;
+W = linspace(0.06,0.2,200);
+Z0 = 87/sqrt(er+1.41)*log(5.98*H./(0.8*W+T));
+h = fig_new(16,11);
+subplot(2,1,1); hold on; box on; grid on;
+patch([0.06 0.2 0.2 0.06],[45 45 55 55],[0.85 1 0.85],'EdgeColor','none');
+plot(W, Z0, 'b');
+z13 = 87/sqrt(er+1.41)*log(5.98*H/(0.8*0.13+T)); z10 = 87/sqrt(er+1.41)*log(5.98*H/(0.8*0.1+T));
+plot(0.13, z13, 'ro','MarkerFaceColor','r'); plot(0.10, z10, 'ks','MarkerFaceColor','k');
+text(0.135, z13+3, rus(sprintf('W = 0,13 мм: %.1f Ом', z13)));
+text(0.105, z10+3, rus(sprintf('W = 0,10 мм: %.1f Ом', z10)));
+xlabel('Ширина проводника W, мм'); ylabel('Z_0, Ом'); title('Одиночная линия, H = 0,1 мм, T = 0,04 мм, \epsilon_r = 4,1');
+subplot(2,1,2); hold on; box on; grid on;
+S = linspace(0.06,0.3,200);
+patch([0.06 0.3 0.3 0.06],[90 90 110 110],[0.85 1 0.85],'EdgeColor','none');
+Zd = 2*z10*(1-0.48*exp(-0.96*S/H));
+plot(S, Zd, 'b'); zs = 2*z10*(1-0.48*exp(-0.96*0.1/H));
+plot(0.1, zs, 'ro','MarkerFaceColor','r'); text(0.105, zs-4, rus(sprintf('S = 0,10 мм: %.1f Ом', zs)));
+xlabel('Зазор S, мм'); ylabel('Z_{диф}, Ом'); title('Дифференциальная пара, W = 0,1 мм; зелёная зона – допуск ±10 %');
+fig_save(h,'f14_pcb_z');
